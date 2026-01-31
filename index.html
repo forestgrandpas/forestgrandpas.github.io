@@ -1,10 +1,290 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
-  <meta charset="utf-8">
-  <title>Forest Grandpas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The best of ATARI XL/XE demoscene music vol. 1</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; background: #a8a8a8; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 40px; padding-bottom: 120px; }
+        
+        .cover-wrapper { position: relative; max-width: 1350px; width: 100%; display: flex; align-items: center; justify-content: flex-end; }
+
+        .vinyl-disk { position: absolute; left: -5%; height: 95%; aspect-ratio: 1 / 1; background: radial-gradient(circle at center, transparent 0%, transparent 22%, #1a1a1a 22%, #1a1a1a 23%, transparent 23%, transparent 100% ), repeating-radial-gradient(circle at center, #0a0a0a 0px, #1a1a1a 1px, #0a0a0a 2px ); border-radius: 50%; z-index: 0; box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8), 0 10px 40px rgba(0, 0, 0, 0.6); transition: left 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; }
+/*
+        .vinyl-disk::after { content: "Best of<br>ATARI XL/XE<br>demoscene music"; color: #2e4a7d; font-family: 'Arial Black', sans-serif; font-size: 1.2vw; display: flex; align-items: center; justify-content: center; width: 22%; height: 22%; background: #e0e0e0; border-radius: 50%; border: 4px solid #5a7eb5; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
+*/
+        .vinyl-disk::after {
+            /* Zamień <br> na \a */
+            content: "the best of\a ATARI XL/XE\a demoscene music"; 
+            
+            /* To jest kluczowe! Bez tego \a nie zadziała */
+            white-space: pre-wrap; 
+            
+            /* Reszta Twoich stylów */
+            text-align: center; /* Dodaj to, żeby wycentrować tekst w pionie/poziomie */
+            color: #2e4a7d;
+            font-family: 'Arial Black', sans-serif;
+            font-size: 1.2vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22%;
+            height: 22%;
+            background: #e0e0e0;
+            border-radius: 50%;
+            border: 4px solid #5a7eb5;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        }
+        .vinyl-disk.is-playing { left: -35%; }
+        .vinyl-disk.is-spinning { animation: spin 4s linear infinite; }
+        .vinyl-disk::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: linear-gradient(135deg, transparent 45%, rgba(255,255,255,0.15) 50%, transparent 55%); z-index: 1; pointer-events: none; }
+
+        .tonearm { position: absolute; left: 1%; bottom: 10px; width: 320px; height: 12px; background: linear-gradient(to bottom, #aaa 0%, #777 50%, #444 100%); transform-origin: left center; transform: rotate(-90deg); transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); z-index: 5; border-radius: 6px; box-shadow: 0 15px 25px rgba(0,0,0,0.7), inset 0 1px 2px rgba(255,255,255,0.5); border-bottom: 2px solid #333; }        
+        .tonearm::before { content: ""; position: absolute; right: 0; top: -5px; width: 25px; height: 22px; background: #333; border-radius: 2px; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        .tonearm.on-vinyl { transform: rotate(-155deg); }
+
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .vinyl-cover { 
+            position: relative; z-index: 1; width: 100%; background: #b0b0b0; 
+            background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0px, rgba(255, 255, 255, 0.08) 2px, transparent 2px, transparent 4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); 
+            display: grid; grid-template-columns: 1fr 1fr; padding: 35px; gap: 30px;
+            border-radius: 4px;
+        }
+
+        .content-box { background: rgba(255, 255, 255, 0.4); padding: 20px; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 24px; }
+        .album-title h1 { font-size: 1.3em; color: #5a7eb5; text-transform: lowercase; }
+        .main-title { font-size: 3.2em; line-height: 0.9; color: #2e4a7d; font-weight: 900; margin: 8px 0; }
+        .subtitle { font-size: 1.3em; color: #5a7eb5; font-weight: bold; }
+        .vol { text-align: right; font-weight: bold; color: #2e4a7d; margin-top: -10px; font-size: 0.9em; }
+        .info-text { font-size: 0.82em; line-height: 1.5; color: #222; font-weight: 600; text-align: justify; }
+        .credits-section { font-size: 0.78em; color: #333; margin-bottom: 3px; display: flex; }
+        .credits-section strong { width: 100px; flex-shrink: 0; }
+        
+        .branding-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center; align-items: end; }
+        .brand-item { text-decoration: none; display: block; transition: transform 0.3s ease; }
+        .brand-item:hover { transform: translateY(-8px); }
+        .brand-item span { display: block; font-size: 0.65em; color: #666; margin-bottom: 10px; text-transform: uppercase; }
+        .brand-item img { height: 124px; max-width: 100%; object-fit: contain; }
+        .brand-item.full { grid-column: 1 / span 2; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 15px; margin-top: 10px; }
+        .brand-item.full img { width: 250px; height: auto; }
+        
+        .side-label { background: #5a7eb5; color: white; width: 32px; height: 32px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.2em; font-weight: bold; margin-bottom: 15px; }
+        
+        .track { padding: 6px 10px; cursor: pointer; border-radius: 4px; transition: background 0.2s; }
+        .track:hover { background: rgba(255, 255, 255, 0.5); }
+        .track.playing { background: rgba(90, 126, 181, 0.4) !important; }
+        
+        .track-header { display: flex; align-items: baseline; }
+        .track-num { font-weight: bold; width: 22px; font-size: 0.95em; }
+        .track-title { font-weight: 800; color: #111; font-size: 1em; }
+        .dots { flex-grow: 1; border-bottom: 2px dotted #777; margin: 0 8px; position: relative; top: -4px; }
+        .track-duration { font-weight: bold; font-size: 0.95em; }
+        .track-format { background: #5a7eb5; color: white; min-width: 60px; text-align:center; padding: 1px 5px; border-radius: 3px; font-size: 0.65em; font-weight: bold; margin: 0 10px; }
+        .track-year { font-size: 0.8em; color: #666; min-width: 120px; text-align: right; }
+        .track-artist { padding-left: 22px; font-size: 0.85em; font-weight: 600; color: #444; }
+        .track-subtext { padding-left: 22px; font-size: 0.75em; font-style: italic; color: #666; line-height: 1.2; }
+        
+        .patronage-footer { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px; background: rgba(255,255,255,0.2); border-radius: 4px; }
+        .patronage-logos { display: flex; justify-content: center; align-items: center; gap: 25px; width: 100%; }
+        .patronage-logos a { display: flex; transition: transform 0.3s ease; }
+        .patronage-logos a:hover { transform: translateY(-5px); }
+        .patronage-logos img { height: 35px; }
+        .patronage-label { align-self: flex-end; font-size: 0.6em; color: #555; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; opacity: 0.7; margin-right: 10px; } 
+        
+        .player-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #333; color: white; padding: 15px 30px; display: none; align-items: center; gap: 20px; z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); }
+        .player-bar.active { display: flex; }
+        .play-btn { background: #5a7eb5; border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; min-width: 80px; }
+        .track-info-mini { flex: 1; font-size: 0.9em; }
+        .progress-container { flex: 2; height: 6px; background: #555; border-radius: 3px; position: relative; overflow: hidden; }
+        .progress-fill { height: 100%; background: #5a7eb5; width: 0%; }
+    </style>
 </head>
 <body>
-  <h1>Hello world 🌲</h1>
+
+<div class="cover-wrapper">
+    <div class="tonearm" id="tonearm"></div>
+    <div class="vinyl-disk" id="vinyl"></div>
+    <div class="vinyl-cover">
+        <div class="left-side">
+            <div class="content-box">
+                <div class="album-title"><h1>The best of</h1><div class="main-title">ATARI XL/XE</div><div class="subtitle">demoscene music</div><div class="vol">vol. 1</div></div>
+            </div>
+            <div class="content-box">
+                <p class="info-text">All tracks on this album were recorded directly through an analog signal path from a real 8-bit Atari computer with two original POKEY chips, and then analog-mastered at EPROM SOUNDS STUDIO. We do believe this effort was worth it, as it allowed us to preserve the soul of this wonderful music.</p>
+                <p class="info-text">Click on the track list to play a snippet of the mastered track.</p>
+            </div>
+            <div class="content-box">
+                <div class="credits-section"><strong>production:</strong> Sebastian Pawlak (tr1x/Agenda), Grzegorz Żyła (SuN/New Generation)</div>
+                <div class="credits-section"><strong>mastering:</strong> Michał Baj (DJ EPROM)</div>
+                <div class="credits-section"><strong>cover design:</strong> Sebastian Pawlak, Piotr Radecki (Piesiu/Agenda), Szymon Radecki</div>
+                <div class="credits-section"><strong>cover photo:</strong> Sebastian Pawlak (tr1x/Agenda)</div>
+                <div class="credits-section"><strong>tech support:</strong> Łukasz Maśko (Peri Noid), Wojciech Pawlak</div>
+            </div>
+            <div class="content-box branding-grid">
+                <a href="mailto:forestgrandpas@gmail.com" target="_blank" class="brand-item">
+                    <span>production / contact</span>
+                    <img src="assets/forest-grandpas.png" alt="Forest Grandpas">
+                </a>
+                <a href="http://www.epromsounds.com" target="_blank" class="brand-item">
+                    <span>mastering</span>
+                    <img src="assets/eprom-sounds.png" alt="Eprom Sounds">
+                </a>
+                <a href="https://x-disc.pl" target="_blank" class="brand-item full">
+                    <span>pressing plant</span>
+                    <img src="assets/xdisc.png" alt="X-Disc">
+                </a>
+            </div>
+        </div>
+
+        <div class="right-side">
+            <div class="content-box">
+                <div class="side-label">A</div>
+                <div class="tracklist">
+                    <div class="track" data-file="track1.mp3"><div class="track-header"><span class="track-num">1.</span><span class="track-title">Life After Death</span><span class="dots"></span><span class="track-duration">2:15</span><span class="track-format">MONO</span><span class="track-year">Silly Venture 2016</span></div><div class="track-artist">Makary Brauner (Makary/New Generation)</div></div>
+                    <div class="track" data-file="track2.mp3"><div class="track-header"><span class="track-num">2.</span><span class="track-title">Kompleks K-12 Teaser</span><span class="dots"></span><span class="track-duration">2:27</span><span class="track-format">STEREO</span><span class="track-year">Silly Venture 2019</span></div><div class="track-artist">Piotr Lis (LISU/New Generation^Tristesse) music</div><div class="track-subtext">Marcin Kubica (booker/MultiStyle Labs) instruments, initial arrangement</div></div>
+                    <div class="track" data-file="track3.mp3"><div class="track-header"><span class="track-num">3.</span><span class="track-title">Candy Mountain</span><span class="dots"></span><span class="track-duration">3:43</span><span class="track-format">STEREO</span><span class="track-year">Silly Venture 2011</span></div><div class="track-artist">Bartłomiej Wąsiel (BeWu/Grayscale^Mystic Bytes)</div></div>
+                    <div class="track" data-file="track4.mp3"><div class="track-header"><span class="track-num">4.</span><span class="track-title">Ten Past Midnight</span><span class="dots"></span><span class="track-duration">2:00</span><span class="track-format">STEREO</span><span class="track-year">Silly Venture 2012</span></div><div class="track-artist">Michał Radecki-Mikulicz (stRing/Agenda)</div></div>
+                    <div class="track" data-file="track5.mp3"><div class="track-header"><span class="track-num">5.</span><span class="track-title">Back To Scene</span><span class="dots"></span><span class="track-duration">3:02</span><span class="track-format">STEREO</span><span class="track-year">Silly Venture 2012</span></div><div class="track-artist">Bartłomiej Wieczorkowski (wiecz0r/Lamers)</div></div>
+                    <div class="track" data-file="track6.mp3"><div class="track-header"><span class="track-num">6.</span><span class="track-title">Bells</span><span class="dots"></span><span class="track-duration">3:08</span><span class="track-format">MONO</span><span class="track-year">Shadows Party 1994</span></div><div class="track-artist">Adrian Galiński (Daxey/WaxSoft^Bloody Coders^Slight)</div></div>
+                    <div class="track" data-file="track7.mp3"><div class="track-header"><span class="track-num">7.</span><span class="track-title">Enigmatic Man</span><span class="dots"></span><span class="track-duration">1:49</span><span class="track-format">MONO</span><span class="track-year">Rush Hours 1998</span></div><div class="track-artist">Marek Bądkowski (Bac/Taquart)</div></div>
+                </div>
+            </div>
+            <div class="content-box">
+                <div class="side-label">B</div>
+                <div class="tracklist">
+                    <div class="track" data-file="track8.mp3"><div class="track-header"><span class="track-num">1.</span><span class="track-title">Return of Atarians</span><span class="dots"></span><span class="track-duration">2:35</span><span class="track-format">STEREO</span><span class="track-year">QuaST 2003</span></div><div class="track-artist">Grzegorz Kwiatek (Greg/Taquart^Grayscale^AiDs)</div></div>
+                    <div class="track" data-file="track9.mp3"><div class="track-header"><span class="track-num">2.</span><span class="track-title">Zizibum</span><span class="dots"></span><span class="track-duration">6:29</span><span class="track-format">STEREO</span><span class="track-year">2004</span></div><div class="track-artist">Łukasz Sychowicz (X-Ray/Slight^Taquart^Grayscale)</div></div>
+                    <div class="track" data-file="track10.mp3"><div class="track-header"><span class="track-num">3.</span><span class="track-title">Chipster Harmony</span><span class="dots"></span><span class="track-duration">3:05</span><span class="track-format">STEREO</span><span class="track-year">Lost Party 2021</span></div><div class="track-artist">Zdeněk Eisenhammer (PG)</div></div>
+                    <div class="track" data-file="track11.mp3"><div class="track-header"><span class="track-num">4.</span><span class="track-title">Sweet Illusions - Effect 2</span><span class="dots"></span><span class="track-duration">2:39</span><span class="track-format">MONO</span><span class="track-year">Shadows Party 1994</span></div><div class="track-artist">Bartosz Kalinowski (Bartman/Shadows)</div></div>
+                    <div class="track" data-file="track12.mp3"><div class="track-header"><span class="track-num">5.</span><span class="track-title">Jack Dance</span><span class="dots"></span><span class="track-duration">3:22</span><span class="track-format">MONO</span><span class="track-year">1994</span></div><div class="track-artist">Adam Bienias (SoTe/Slight)</div><div class="track-subtext">this is a cover of the Amiga track "Jack Dance" by Karsten Obarski</div></div>
+                </div>
+            </div>
+
+            <div class="patronage-footer">
+                <div class="patronage-logos">
+                    <a href="http://atari.org.pl" target="_blank"><img src="assets/atariarea.png" alt="AtariArea"></a>
+                    <a href="https://atarionline.pl" target="_blank"><img src="assets/atari-online.png" alt="Atari Online"></a>
+                    <a href="https://ptodt.org.pl/publikacje/grel/" target="_blank"><img src="assets/grel.png" alt="GREL"></a>
+                    <a href="http://atarifan.pl" target="_blank"><img src="assets/atari-fan.png" alt="Atari Fan"></a>
+                </div>
+                <span class="patronage-label">patronage</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="player-bar" id="playerBar">
+    <button class="play-btn" id="masterPlayBtn">▶ Play</button>
+    <div class="track-info-mini">
+        <div id="playingTitle" style="font-weight:bold;"></div>
+        <div id="playingArtist" style="font-size:0.8em; color:#bbb;"></div>
+    </div>
+    <div class="progress-container"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+
+<script>
+    // --- KONFIGURACJA AUDIO ---
+    const currentAudio = new Audio();
+    const crackle = new Audio('audio/crackle.mp3');
+    crackle.volume = 0.5;
+
+    // --- ELEMENTY INTERFEJSU ---
+    const tracks = document.querySelectorAll('.track'); // Poprawiono z .track-item
+    const masterPlayBtn = document.getElementById('masterPlayBtn');
+    const vinyl = document.getElementById('vinyl');
+    const tonearm = document.getElementById('tonearm');
+    const playingTitle = document.getElementById('playingTitle');
+    const playingArtist = document.getElementById('playingArtist');
+    const playerBar = document.getElementById('playerBar');
+    const progressFill = document.getElementById('progressFill');
+
+    let isPlaying = false;
+    let currentTrackItem = null;
+
+    // --- SEKWENCJA STARTOWA ---
+    function startVinylSequence(trackItem) {
+        const fileName = trackItem.getAttribute('data-file');
+        currentTrackItem = trackItem;
+
+        // Reset wizualny listy
+        tracks.forEach(t => t.classList.remove('playing'));
+        trackItem.classList.add('playing');
+        
+        // Animacje gramofonu
+        vinyl.classList.add('is-playing', 'is-spinning');
+        tonearm.classList.add('on-vinyl');
+        
+        // Info w barze
+        playingTitle.innerText = trackItem.querySelector('.track-title').innerText;
+        playingArtist.innerText = trackItem.querySelector('.track-artist').innerText;
+        playerBar.classList.add('active');
+
+        isPlaying = true;
+        masterPlayBtn.innerText = "■ Stop";
+
+        // Audio Reset
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        
+        crackle.currentTime = 0;
+        crackle.play().catch(e => console.log("Czekam na interakcję..."));
+
+        crackle.onended = () => {
+            if (isPlaying) {
+                currentAudio.src = "audio/" + fileName;
+                currentAudio.play();
+            }
+        };
+    }
+
+    // --- FUNKCJA STOP ---
+    function stopEverything() {
+        isPlaying = false;
+        masterPlayBtn.innerText = "▶ Play";
+        
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        crackle.pause();
+        crackle.currentTime = 0;
+
+        vinyl.classList.remove('is-spinning');
+        tonearm.classList.remove('on-vinyl');
+        // Płyta zostaje wysunięta, ale przestaje się kręcić i igła wraca. 
+    }
+
+    // --- KLIKNIĘCIA W UTWORY ---
+    tracks.forEach(track => {
+        track.addEventListener('click', () => {
+            // Zawsze startujemy pełną sekwencję po kliknięciu w utwór
+            startVinylSequence(track);
+        });
+    });
+
+    // --- GŁÓWNY PRZYCISK ---
+    masterPlayBtn.addEventListener('click', () => {
+        if (isPlaying) {
+            stopEverything();
+        } else {
+            const trackToPlay = currentTrackItem || tracks[0];
+            if (trackToPlay) startVinylSequence(trackToPlay);
+        }
+    });
+
+    // --- PASEK POSTĘPU ---
+    currentAudio.addEventListener('timeupdate', () => {
+        if (currentAudio.duration) {
+            const pct = (currentAudio.currentTime / currentAudio.duration) * 100;
+            progressFill.style.width = pct + "%";
+        }
+    });
+
+    currentAudio.onended = () => {
+        stopEverything();
+    };
+</script>
+
 </body>
 </html>
