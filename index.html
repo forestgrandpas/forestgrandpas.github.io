@@ -6,26 +6,19 @@
     <title>The best of ATARI XL/XE demoscene music vol. 1</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Arial', sans-serif; background: #a8a8a8; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 40px; padding-bottom: 120px; }
+        body { font-family: 'Arial', sans-serif; background: #a8a8a8; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; padding-bottom: 100px; }
         
         .cover-wrapper { position: relative; max-width: 1350px; width: 100%; display: flex; align-items: center; justify-content: flex-end; }
 
         .vinyl-disk { position: absolute; left: -5%; height: 95%; aspect-ratio: 1 / 1; background: radial-gradient(circle at center, transparent 0%, transparent 22%, #1a1a1a 22%, #1a1a1a 23%, transparent 23%, transparent 100% ), repeating-radial-gradient(circle at center, #0a0a0a 0px, #1a1a1a 1px, #0a0a0a 2px ); border-radius: 50%; z-index: 0; box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8), 0 10px 40px rgba(0, 0, 0, 0.6); transition: left 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; }
-/*
-        .vinyl-disk::after { content: "Best of<br>ATARI XL/XE<br>demoscene music"; color: #2e4a7d; font-family: 'Arial Black', sans-serif; font-size: 1.2vw; display: flex; align-items: center; justify-content: center; width: 22%; height: 22%; background: #e0e0e0; border-radius: 50%; border: 4px solid #5a7eb5; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
-*/
+
         .vinyl-disk::after {
-            /* Zamień <br> na \a */
             content: "The best of\a ATARI XL/XE\a demoscene music"; 
-            
-            /* To jest kluczowe! Bez tego \a nie zadziała */
             white-space: pre-wrap; 
-            
-            /* Reszta Twoich stylów */
-            text-align: center; /* Dodaj to, żeby wycentrować tekst w pionie/poziomie */
+            text-align: center;
             color: #2e4a7d;
             font-family: 'Arial Black', sans-serif;
-            font-size: 24px;
+            font-size: clamp(7px, 1.2vw, 20px);
             line-height: 1.1;
             display: flex;
             align-items: center;
@@ -78,10 +71,10 @@
         .track:hover { background: rgba(255, 255, 255, 0.5); }
         .track.playing { background: rgba(90, 126, 181, 0.4) !important; }
         
-        .track-header { display: flex; align-items: baseline; }
+        .track-header { display: flex; align-items: baseline; flex-wrap: wrap; }
         .track-num { font-weight: bold; width: 22px; font-size: 0.95em; }
         .track-title { font-weight: 800; color: #111; font-size: 1em; }
-        .dots { flex-grow: 1; border-bottom: 2px dotted #777; margin: 0 8px; position: relative; top: -4px; }
+        .dots { flex-grow: 1; border-bottom: 2px dotted #777; margin: 0 8px; position: relative; top: -4px; min-width: 20px; }
         .track-duration { font-weight: bold; font-size: 0.95em; }
         .track-format { background: #5a7eb5; color: white; min-width: 60px; text-align:center; padding: 1px 5px; border-radius: 3px; font-size: 0.65em; font-weight: bold; margin: 0 10px; }
         .track-year { font-size: 0.8em; color: #666; min-width: 120px; text-align: right; }
@@ -89,11 +82,14 @@
         .track-subtext { padding-left: 22px; font-size: 0.75em; font-style: italic; color: #666; line-height: 1.2; }
         
         .patronage-footer { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px; background: rgba(255,255,255,0.2); border-radius: 4px; }
-        .patronage-logos { display: flex; justify-content: center; align-items: center; gap: 25px; width: 100%; }
+        .patronage-logos { display: flex; justify-content: center; align-items: center; gap: 25px; width: 100%; flex-wrap: wrap; }
         .patronage-logos a { display: flex; transition: transform 0.3s ease; }
         .patronage-logos a:hover { transform: translateY(-5px); }
         .patronage-logos img { height: 35px; }
         .patronage-label { align-self: flex-end; font-size: 0.6em; color: #555; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; opacity: 0.7; margin-right: 10px; } 
+        
+        .buy-buttons-container { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; gap: 10px; flex-wrap: wrap; }
+        .buy-btn { display: inline-block; background: #5a7eb5; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 0.75em; text-align: center; }
         
         .player-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #333; color: white; padding: 15px 30px; display: none; align-items: center; gap: 20px; z-index: 1000; box-shadow: 0 -5px 20px rgba(0,0,0,0.3); }
         .player-bar.active { display: flex; }
@@ -101,6 +97,221 @@
         .track-info-mini { flex: 1; font-size: 0.9em; }
         .progress-container { flex: 2; height: 6px; background: #555; border-radius: 3px; position: relative; overflow: hidden; }
         .progress-fill { height: 100%; background: #5a7eb5; width: 0%; }
+
+        /* ==================== RESPONSYWNOŚĆ ==================== */
+        
+        /* Tablety (landscape i portrait) */
+        @media (max-width: 1024px) {
+            body { padding: 15px; padding-bottom: 90px; }
+            .vinyl-cover { padding: 25px; gap: 20px; }
+            .content-box { padding: 15px; margin-bottom: 18px; }
+            .main-title { font-size: 2.5em; }
+            .tonearm { width: 250px; }
+            .brand-item img { height: 100px; }
+            .patronage-logos img { height: 30px; }
+        }
+
+        /* Tablet portrait i większe telefony */
+        @media (max-width: 768px) {
+            body { padding: 10px; padding-bottom: 100px; }
+            
+            .cover-wrapper { flex-direction: column; align-items: center; }
+            
+            /* Płyta na górze - mniejsza, wycentrowana */
+            .vinyl-disk { 
+                position: relative;
+                left: 0 !important;
+                height: auto;
+                width: 60%;
+                max-width: 280px;
+                margin: 0 auto 30px;
+                box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 5px 20px rgba(0, 0, 0, 0.6);
+            }
+            
+            /* Plinta pod płytą - wyższa, płyta leży na niej */
+            .cover-wrapper::after {
+                content: "";
+                position: absolute;
+                top: calc(-1vw * 0.45);
+                left: 50%;
+                transform: translateX(-50%);
+                width: 75vw;
+                max-width: 380px;
+                height: 290px;
+                background: linear-gradient(to bottom, #666, #3a3a3a, #2a2a2a);
+                border-radius: 6px;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.1);
+                z-index: -1;
+            }
+
+            .vinyl-disk.is-playing { left: 0 !important; }
+            
+            /* Ramię - punkt zaczepienia sztywno względem lewej krawędzi plinty */
+            .tonearm { 
+                position: absolute;
+                left: calc(50% - min(37.5vw, 190px) + 20px) !important;
+                top: calc(-1vw * 0.45 + 250px);
+                width: 160px;
+                height: 8px;
+                margin: 0;
+                transform: rotate(-90deg);
+                transform-origin: left center;
+            }
+            .tonearm.on-vinyl { transform: rotate(-75deg); }
+            .tonearm::before { width: 18px; height: 16px; top: -4px; }
+            
+            /* Okładka - jedna kolumna */
+            .vinyl-cover { 
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 0;
+                width: 100%;
+            }
+            
+            .left-side, .right-side { width: 100%; }
+            
+            .content-box { padding: 15px; margin-bottom: 15px; }
+            
+            .main-title { font-size: 2em; }
+            .album-title h1 { font-size: 1.1em; }
+            .subtitle { font-size: 1.1em; }
+            
+            .info-text { font-size: 0.9em; }
+            .credits-section { font-size: 0.85em; flex-wrap: wrap; }
+            .credits-section strong { width: auto; margin-right: 5px; }
+            
+            /* Branding - stack wertykalny */
+            .branding-grid { grid-template-columns: 1fr; gap: 20px; }
+            .brand-item.full { grid-column: 1; border-top: none; padding-top: 0; margin-top: 0; }
+            .brand-item img { height: 80px; }
+            .brand-item.full img { width: 180px; }
+            
+            /* Tracklista - kompaktowa */
+            .track { padding: 8px; }
+            .track-header { gap: 5px; }
+            .track-format { margin: 0 5px; min-width: 50px; font-size: 0.6em; }
+            .track-year { min-width: auto; font-size: 0.75em; }
+            .track-artist { font-size: 0.8em; }
+            .track-subtext { font-size: 0.7em; }
+            
+            /* Patronage */
+            .patronage-logos { gap: 15px; }
+            .patronage-logos img { height: 28px; }
+            
+            /* Przyciski zakupu */
+            .buy-buttons-container { flex-direction: column; }
+            .buy-btn { width: 100%; padding: 10px; font-size: 0.85em; }
+            
+            /* Player bar */
+            .player-bar { padding: 12px 15px; gap: 10px; flex-wrap: wrap; }
+            .play-btn { min-width: 70px; padding: 8px 15px; font-size: 0.9em; }
+            .track-info-mini { font-size: 0.85em; min-width: 100%; }
+            .progress-container { min-width: 100%; }
+        }
+
+        /* Małe telefony */
+        @media (max-width: 480px) {
+            body { padding: 5px; padding-bottom: 110px; }
+            
+            .vinyl-disk { 
+                width: 70%;
+                max-width: 250px;
+                margin-bottom: 30px;
+            }
+            
+            .cover-wrapper::after {
+                top: calc(70vw * 0.45);
+                width: 80vw;
+                height: 50px;
+            }
+            
+            .tonearm { 
+                left: calc(50% - 40vw) !important;
+                top: calc(70vw * 0.45 + 10px);
+                width: 120px; 
+                height: 6px;
+                transform: rotate(0deg);
+            }
+            .tonearm.on-vinyl { transform: rotate(-45deg); }
+            
+            .vinyl-cover { padding: 15px; }
+            
+            .main-title { font-size: 1.6em; }
+            .album-title h1 { font-size: 1em; }
+            .subtitle { font-size: 1em; }
+            .vol { font-size: 0.85em; }
+            
+            .content-box { padding: 12px; margin-bottom: 12px; }
+            
+            .info-text { font-size: 0.85em; line-height: 1.4; }
+            .credits-section { font-size: 0.8em; }
+            
+            .side-label { width: 28px; height: 28px; font-size: 1em; margin-bottom: 10px; }
+            
+            .track { padding: 6px; }
+            .track-num { width: 18px; font-size: 0.85em; }
+            .track-title { font-size: 0.9em; }
+            .track-duration { font-size: 0.85em; }
+            .track-format { font-size: 0.55em; padding: 1px 4px; }
+            .track-year { font-size: 0.7em; }
+            .track-artist { padding-left: 18px; font-size: 0.75em; }
+            .track-subtext { padding-left: 18px; font-size: 0.65em; }
+            
+            .brand-item img { height: 60px; }
+            .brand-item.full img { width: 150px; }
+            .brand-item span { font-size: 0.6em; }
+            
+            .patronage-logos { gap: 10px; }
+            .patronage-logos img { height: 24px; }
+            .patronage-label { font-size: 0.55em; }
+            
+            .buy-btn { padding: 10px; font-size: 0.8em; }
+            
+            .player-bar { padding: 10px; }
+            .play-btn { min-width: 60px; padding: 8px 12px; font-size: 0.85em; }
+            .track-info-mini { font-size: 0.8em; }
+            .track-info-mini div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        }
+
+        /* Bardzo małe ekrany */
+        @media (max-width: 360px) {
+            .vinyl-disk { width: 75%; max-width: 220px; }
+            .cover-wrapper::after { 
+                width: 85vw;
+                height: 45px;
+                top: calc(75vw * 0.45);
+            }
+            .tonearm { 
+                width: 100px;
+                top: calc(75vw * 0.45 + 8px);
+                transform: rotate(0deg);
+            }
+            .tonearm.on-vinyl { transform: rotate(-45deg); }
+            .main-title { font-size: 1.4em; }
+            .track-title { font-size: 0.85em; }
+            .track-format, .track-year { display: none; }
+        }
+
+        /* Landscape na telefonach */
+        @media (max-height: 500px) and (orientation: landscape) {
+            body { padding: 5px; padding-bottom: 80px; }
+            .vinyl-disk { width: 30%; max-width: 180px; margin-bottom: 10px; }
+            .cover-wrapper::after { 
+                width: 40vw; 
+                height: 40px;
+                top: calc(30vw * 0.45);
+            }
+            .tonearm { 
+                width: 100px; 
+                left: calc(50% - 20vw) !important;
+                top: calc(30vw * 0.45 + 8px);
+                transform: rotate(0deg);
+            }
+            .tonearm.on-vinyl { transform: rotate(-45deg); }
+            .vinyl-cover { padding: 15px; }
+            .content-box { padding: 10px; margin-bottom: 10px; }
+            .player-bar { padding: 8px 15px; }
+        }
     </style>
 </head>
 <body>
@@ -125,7 +336,7 @@
                 <div class="credits-section"><strong>tech support:</strong> Łukasz Maśko (Peri Noid), Wojciech Pawlak</div>
             </div>
             <div class="content-box branding-grid">
-                <a href="mailto:forestgrandpas@gmail.com" target="_blank" class="brand-item">
+                <a href="/cdn-cgi/l/email-protection#aec8c1dccbdddac9dccfc0cadecfddeec9c3cfc7c280cdc1c3" target="_blank" class="brand-item">
                     <span>production / contact</span>
                     <img src="assets/forest-grandpas.png" alt="Forest Grandpas">
                 </a>
@@ -139,26 +350,19 @@
                 </a>
             </div>
 
-               <div class="content-box">
+            <div class="content-box">
                 <div class="credits-section"><strong>shop:</strong> <a href="https://atarifan.pl" target="_blank">atarifan.pl</a></div>
                 <p class="info-text" style="margin: 10px 0;">You can support this project and <a href="https://ptodt.org.pl/" target="_blank">PTODT</a> by purchasing the physical vinyl edition.</p>
                 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
-                    
-                    <a href="https://atarifan.pl/koszyk/?add-to-cart=1835" 
-                       style="display: inline-block; background: #5a7eb5; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 0.75em;">
+                <div class="buy-buttons-container">
+                    <a href="https://atarifan.pl/koszyk/?add-to-cart=1835" class="buy-btn">
                        BUY VINYL EDITION THRU PTODT
                     </a>
-
-                    <a href="mailto:forestgrandpas@gmail.com" 
-                       style="display: inline-block; background: #5a7eb5; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; font-weight: bold; font-size: 0.75em;">
+                    <a href="/cdn-cgi/l/email-protection#87e1e8f5e2f4f3e0f5e6e9e3f7e6f4c7e0eae6eeeba9e4e8ea" class="buy-btn">
                        BUY VINYL EDITION DIRECTLY
                     </a>
-                    
                 </div>
             </div>
-
-            
         </div>
 
         <div class="right-side">
@@ -214,7 +418,7 @@
     crackle.volume = 0.5;
 
     // --- ELEMENTY INTERFEJSU ---
-    const tracks = document.querySelectorAll('.track'); // Poprawiono z .track-item
+    const tracks = document.querySelectorAll('.track');
     const masterPlayBtn = document.getElementById('masterPlayBtn');
     const vinyl = document.getElementById('vinyl');
     const tonearm = document.getElementById('tonearm');
@@ -235,13 +439,35 @@
         tracks.forEach(t => t.classList.remove('playing'));
         trackItem.classList.add('playing');
         
+        // Na mobile: najpierw scroll, potem animacja
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            // Czekamy na zakończenie scrolla (800ms)
+            setTimeout(() => {
+                startAnimationAndAudio(fileName);
+            }, 800);
+        } else {
+            // Na desktop od razu
+            startAnimationAndAudio(fileName);
+        }
+    }
+
+    // --- FUNKCJA POMOCNICZA: ANIMACJA I AUDIO ---
+    function startAnimationAndAudio(fileName) {
         // Animacje gramofonu
         vinyl.classList.add('is-playing', 'is-spinning');
         tonearm.classList.add('on-vinyl');
         
         // Info w barze
-        playingTitle.innerText = trackItem.querySelector('.track-title').innerText;
-        playingArtist.innerText = trackItem.querySelector('.track-artist').innerText;
+        const currentTitle = currentTrackItem.querySelector('.track-title').innerText;
+        const currentArtist = currentTrackItem.querySelector('.track-artist').innerText;
+        playingTitle.innerText = currentTitle;
+        playingArtist.innerText = currentArtist;
         playerBar.classList.add('active');
 
         isPlaying = true;
@@ -274,13 +500,11 @@
 
         vinyl.classList.remove('is-spinning');
         tonearm.classList.remove('on-vinyl');
-        // Płyta zostaje wysunięta, ale przestaje się kręcić i igła wraca. 
     }
 
     // --- KLIKNIĘCIA W UTWORY ---
     tracks.forEach(track => {
         track.addEventListener('click', () => {
-            // Zawsze startujemy pełną sekwencję po kliknięciu w utwór
             startVinylSequence(track);
         });
     });
